@@ -1,26 +1,14 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router/index'
-import store from './store'
+import store from './store/index'
 import 'animate.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 
+import './utils/request'
 require('./mock')
-
-import backend from './utils/backend'
-Object.defineProperty(Vue.prototype, '$backend', {
-  get() {
-    return backend
-  }
-})
-import api from './api/index'
-Object.defineProperty(Vue.prototype, '$api', {
-  get() {
-    return api
-  }
-})
 
 Vue.config.productionTip = false
 

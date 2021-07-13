@@ -1,12 +1,12 @@
 <template>
   <div id="home-page">
-    <el-row class="home-content">
+    <el-row class="home-content" :style="devicePC ? 'padding: 100px 20%':'padding: 20px'">
       <el-col :span="24">
         <div class="photo"><img src="../../assets/image/hhh.jpg"/></div>
       </el-col>
       <el-col :span="24">
           <el-row :gutter="20">
-            <el-col :sm="24" :lg="12">
+            <el-col :sm="24" :md="12" :class="devicePC ? 'flex-right':'flex-center'">
               <transition name="el-zoom-in-center">
                 <div v-show="show" class="transition-box transition-box-first">
                   <ul>
@@ -15,18 +15,19 @@
                 </div>
               </transition>
             </el-col>
-
-            <el-col :sm="24" :lg="12">
-                <el-col>
-                  <transition name="el-zoom-in-top" >
-                    <div v-show="show" @click="handleTo('bj')" class="transition-box animate__animated animate__bounce">前端笔记</div>
-                  </transition>
-                </el-col>
-                <el-col>
-                 <transition name="el-zoom-in-bottom">
-                    <div v-show="show" @click="handleTo('fx')" class="transition-box animate__animated animate__pulse">分享</div>
-                  </transition>
-                </el-col>
+            <el-col :sm="24" :md="12">
+                <el-row>
+                  <el-col :span="24" :class="devicePC ? 'flex-left':'flex-center'">
+                    <transition name="el-zoom-in-top" >
+                      <div v-show="show" @click="handleTo('bj')" class="transition-box animate__animated animate__bounce">前端笔记</div>
+                    </transition>
+                  </el-col>
+                  <el-col :span="24" :class="devicePC ? 'flex-left':'flex-center'">
+                  <transition name="el-zoom-in-bottom">
+                      <div v-show="show" @click="handleTo('fx')" class="transition-box animate__animated animate__pulse">分享</div>
+                    </transition>
+                  </el-col>
+                </el-row>
             </el-col>
           </el-row>
       </el-col>
@@ -35,11 +36,19 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   export default {
     data() {
       return {
         show: true
       }
+    },
+    computed: {
+        devicePC: {
+            ...mapState({
+                get: state => state.device.devicePC
+            })
+        }
     },
     mounted() {
     },
@@ -65,7 +74,7 @@
   height: 100%;
   overflow: hidden;
   .home-content{
-    padding: 100px 25% 0 25% ;
+    padding: 20px;
     overflow-y: auto;
     width: 100%;
     height: 100%;
@@ -82,14 +91,14 @@
   .transition-box {
     margin-bottom: 10px;
     width: 100%;
-    height: 175px;
+    min-width: 300px;
+    height: 200px;
     border-radius: 4px;
     background-color: #fff;
     text-align: center;
     color: #333;
     padding: 40px 20px;
     box-sizing: border-box;
-    margin-right: 20px;
     opacity: 0.8;
     cursor: pointer;
     .home-title{
@@ -101,7 +110,7 @@
     }
   }
   .transition-box-first{
-    height: 360px;
+    height: 400px;
   }
 }
 </style>

@@ -2,11 +2,8 @@
   "result": "success",
   "success": true,
   "data": [
-    {"name": "HTML", "type": 1},
-    {"name": "JavaScript", "type": 2},
-    {"name": "Vue", "type": 3},
-    {"name": "React", "type": 4},
-    {"name": "面试精选", "type": 5}
+    {"name": "笔记", "type": 1},
+    {"name": "面试精选", "type": 2}
   ],
   "msg": ""
 }

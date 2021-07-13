@@ -2,7 +2,30 @@
   "result": "success",
   "success": true,
   "data": [
-    { "category": "HTML综合问题",
+    { "category": "js基础语法",
+      "type": 1,
+      "list":[
+        { "title": "DOM选择器",
+          "result": [
+            "document.getElementById(); // 通过选择Id选择器，来选择标签\ndocument.getElementsByTagName(); // 通过标签名来选择标签\ndocument.getElementsByClassName(); // 通过Class选择器来选择标签\ndocument.getElementsByName(); // 通过name属性来选择标签   IE8及以上\ndocument.querySelector(); // 可以像css一样，选择标签,获取文档中的第一个元素\ndocument.querySelectorAll(); // 选择所有的，返回类似数组\nwindow.onload = function(){\ndocument.getElementById('div').innerHTML='您好 div';\ndocument.getElementById('div').style.color='red';\ndocument.getElementsByTagName('h1')[1].innerHTML = '您好 h1';\ndocument.getElementsByClassName('demo')[0].style.color='blue';\ndocument.getElementsByName('p')[0].style.background='yellow';\ndocument.querySelector('#h').innerHTML='您好 div';\ndocument.querySelector('.a').innerHTML='您好 aaa';\ndocument.querySelector('p').innerHTML='您好 ppp';\ndocument.querySelectorAll('.h2')[1].style.color='red';}"
+          ]
+        }
+      ]
+    },
+    { "category": "js进阶",
+      "type": 1,
+      "list":[
+        { "title": "前端需要注意哪些SEO",
+          "result": [
+            "合理的title、description、keywords：搜索对着三项的权重逐个减小，title值强调重点即可，重要关键词出现不要超过2次，而且要靠前，不同页面title要有所不同；description把页面内容高度概括，长度合适，不可过分堆砌关键词，不同页面description有所不同；keywords列举出重要关键词即可",
+            "语义化的HTML代码，符合W3C规范：语义化代码让搜索引擎容易理解网页",
+            "重要内容HTML代码放在最前：搜索引擎抓取HTML顺序是从上到下，有的搜索引擎对抓取长度有限制，保证重要内容一定会被抓取"
+          ]
+        }
+      ]
+    },
+    { "category": "ES6",
+      "type": 1,
       "list":[
         { "title": "前端需要注意哪些SEO",
           "result": [
@@ -14,6 +37,7 @@
       ]
     },
     { "category": "CSS部分",
+      "type": 2,
       "list":[
         { "title": "link与@import的区别",
           "result": [

@@ -2,7 +2,7 @@
  <div class="list-page">
   <el-row :gutter="20" class="animate__animated animate__fadeInLeft">
     <!-- 左边列表 -->
-    <el-col :sm="24" :lg="4">
+    <el-col :sm="24" :md="4">
       <el-row>
         <el-col class="list-icon" :span="24">
           <div class="list-icon-box icon-back"><i class="el-icon-s-home" @click="handleBack"></i></div>
@@ -10,13 +10,13 @@
         </el-col>
         <el-col :span="24">
           <ul class="list-info">
-            <li v-for="(item,index) in listInfo" :key="index" @click="handleToShowInfo(item)">{{ item.category }}</li>
+            <li v-for="(item,index) in listInfo" :key="index" @click="handleToShowInfo(item,index)"  :class="{'current-tab-color':currentIndex==index?true:false}">{{ item.category }}</li>
           </ul>
         </el-col>
       </el-row>
     </el-col>
     <!-- 右边展示详细 -->
-    <el-col :sm="24" :lg="20">
+    <el-col :sm="24" :md="20">
       <h3 style="text-align:center;font-size: 30px;">{{ currentCate.name }}</h3>
       <ul class="list-info-detail">
          <li v-for="(item,index) in currentListInfo" :key="index">
@@ -42,6 +42,7 @@
 
 <script>
 import axios from 'axios'
+import { getlistTable } from '@/api/api'
   export default {
     data() {
       return {
@@ -49,7 +50,8 @@ import axios from 'axios'
         listTable: [],
         currentCate: {},
         listInfo: [],
-        currentListInfo: []
+        currentListInfo: [],
+        currentIndex: 0
       }
     },
     mounted() {
@@ -60,8 +62,9 @@ import axios from 'axios'
         this.$router.push('/home')
       },
       // 点击详细的列表，展示数据
-      handleToShowInfo(item) {
+      handleToShowInfo(item, index) {
         this.currentListInfo  = item.list
+        this.currentIndex = index
       },
       // 点击类别展示页面
       handleToShow(item) {
@@ -71,21 +74,11 @@ import axios from 'axios'
       // 获取某个类别的详细信息
       getListInfo(type) {
         const self = this
-        var url = ""
-        switch(type){
-          case 1:
-          case 2:
-          case 3:
-          case 4:
-            break
-          case 5:
-            url = "/list/listInfo/view"
-        }
-        axios.get(url)
+        axios.get('/list/listInfo/view')
         .then(function(res){
           self.drawer = false
-          self.listInfo = res.data.data
-          self.handleToShowInfo(self.listInfo[0])
+          self.listInfo = res.data.data.filter(item => item.type == type)
+          self.handleToShowInfo(self.listInfo[0],0)
         })
         .catch(function(err){
           console.log(err);
@@ -94,10 +87,10 @@ import axios from 'axios'
       // 获取全部分类
       getListTable() {
         const self = this  
-        axios.get('/list/listTable')
+        getlistTable()
         .then(function(res){
-          self.listTable = res.data.data
-          self.handleToShow(self.listTable[4])
+          self.listTable = res.data || []
+          self.handleToShow(self.listTable[0])
         })
         .catch(function(err){
           console.log(err);
@@ -170,7 +163,12 @@ import axios from 'axios'
       cursor: pointer;
     }
     li:hover{
-      color: #0078e7;
+      color: rgb(208, 255, 0);
+      opacity: 0.8;
+      font-size: 16px;
+    }
+    .current-tab-color{
+      color: rgb(208, 255, 0);
       font-size: 16px;
     }
   }
