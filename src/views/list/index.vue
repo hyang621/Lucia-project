@@ -1,6 +1,7 @@
 <template>
  <div class="list-page">
   <el-row :gutter="20" class="animate__animated animate__fadeInLeft">
+    <!-- 左边列表 -->
     <el-col :sm="24" :lg="4">
       <el-row>
         <el-col class="list-icon" :span="24">
@@ -8,21 +9,32 @@
           <div class="list-icon-box icon-unfold"><i class="el-icon-s-unfold" @click="drawer=true"></i></div>
         </el-col>
         <el-col :span="24">
-          列表
+          <ul class="list-info">
+            <li v-for="(item,index) in listInfo" :key="index" @click="handleToShowInfo(item)">{{ item.category }}</li>
+          </ul>
         </el-col>
       </el-row>
-       
     </el-col>
+    <!-- 右边展示详细 -->
     <el-col :sm="24" :lg="20">
-        右边
+      <h3 style="text-align:center;font-size: 30px;">{{ currentCate.name }}</h3>
+      <ul class="list-info-detail">
+         <li v-for="(item,index) in currentListInfo" :key="index">
+           <dl>
+             <dt>{{index + 1}}、{{ item.title }}</dt>
+             <dd v-for="(ele,i) in item.result" :key="i"><span class="dot"></span>{{ele}}</dd>
+           </dl>
+         </li>
+      </ul>
     </el-col>
   </el-row>
+  <!-- 弹出总的类别列表 -->
    <el-drawer
       title="分类"
       :visible.sync="drawer"
       direction="ltr">
       <ul class="list-table">
-        <li v-for="item in listTable" :key="item.type" @click="handleToShow(item)">{{ item.name }}</li>
+        <li v-for="item in listTable" :key="item.type" @click="handleToShow(item)" :class="{'current-color':currentCate.name==item.name?true:false}">{{ item.name }}</li>
       </ul>
     </el-drawer>
  </div>
@@ -33,8 +45,11 @@ import axios from 'axios'
   export default {
     data() {
       return {
-        drawer: true,
-        listTable: []
+        drawer: false,
+        listTable: [],
+        currentCate: {},
+        listInfo: [],
+        currentListInfo: []
       }
     },
     mounted() {
@@ -44,11 +59,45 @@ import axios from 'axios'
       handleBack() {
         this.$router.push('/home')
       },
+      // 点击详细的列表，展示数据
+      handleToShowInfo(item) {
+        this.currentListInfo  = item.list
+      },
+      // 点击类别展示页面
+      handleToShow(item) {
+        this.currentCate = item
+        this.getListInfo(item.type)
+      },
+      // 获取某个类别的详细信息
+      getListInfo(type) {
+        const self = this
+        var url = ""
+        switch(type){
+          case 1:
+          case 2:
+          case 3:
+          case 4:
+            break
+          case 5:
+            url = "/list/listInfo/view"
+        }
+        axios.get(url)
+        .then(function(res){
+          self.drawer = false
+          self.listInfo = res.data.data
+          self.handleToShowInfo(self.listInfo[0])
+        })
+        .catch(function(err){
+          console.log(err);
+        });
+      },
+      // 获取全部分类
       getListTable() {
         const self = this  
         axios.get('/list/listTable')
         .then(function(res){
           self.listTable = res.data.data
+          self.handleToShow(self.listTable[4])
         })
         .catch(function(err){
           console.log(err);
@@ -61,6 +110,9 @@ import axios from 'axios'
 <style lang="less" scoped>
 .list-page{
   padding: 20px;
+  background: url("../../assets/image/pic_c.jpg") no-repeat 0 0;
+  width: 100%;
+  height: 100%;
   .list-icon{
     display: flex;
     justify-content: center;
@@ -104,6 +156,46 @@ import axios from 'axios'
     li:hover{
       color: #67c23a;
       font-size: 20px;
+    }
+    .current-color{
+      color: #67c23a;
+      font-size: 20px;
+    }
+  }
+  .list-info{
+    padding: 20px;
+    li{
+      line-height: 30px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    li:hover{
+      color: #0078e7;
+      font-size: 16px;
+    }
+  }
+  .list-info-detail{
+    padding: 20px;
+    li{
+      dl{
+        dt{
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+        dd{
+          padding: 0 20px;
+          line-height: 26px;
+          .dot{
+            width: 8px;
+            height: 8px;
+            border-radius: 100%;
+            background: #333;
+            opacity: 0.7;
+            display: inline-block;
+            margin-right: 10px;
+          }
+        }
+      }
     }
   }
 }
